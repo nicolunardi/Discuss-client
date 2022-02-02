@@ -1,0 +1,186 @@
+html {
+    font-size: 0.8rem;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+    height: 100%;
+    font-family: -apple-system, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.required::after {
+    content: "*";
+    color: red;
+}
+
+.invalid-input {
+    border-color: #dc3545;
+}
+
+.display-invalid-text {
+    display: block;
+}
+
+#sidebar-open-btn {
+    display: none;
+}
+
+.error-alert {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+/***************************************************************
+                        Side Bar
+***************************************************************/
+
+.accordion-collapse {
+    max-height: 200px;
+    overflow: scroll;
+}
+
+#side-bar-user-name {
+    text-transform: capitalize;
+}
+
+/* channel list button when active should be white */
+
+.active .btn {
+    color: white;
+}
+
+.active .btn:focus {
+    border-color: white;
+}
+
+@media screen and (max-width: 680px) {
+    /* when the screen is small, the sidebar goes off screen
+    and the sidebar open button is available */
+    .sidebar {
+        position: absolute;
+        width: 50%;
+        top: 0;
+        left: -50%;
+        bottom: 0;
+        transition: 0.5s ease;
+        z-index: 100;
+    }
+    .sidebar-visible {
+        transform: translateX(100%);
+    }
+    #sidebar-open-btn {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    /* at smaller screens the sidebar pops out and fills
+    the whole screen */
+    .sidebar {
+        position: absolute;
+        width: 100%;
+        left: -100%;
+    }
+}
+
+/***************************************************************
+                        Message Feed Area
+***************************************************************/
+
+.message {
+    background-color: red;
+    animation: pop-in 0.5s ease-in;
+}
+
+@keyframes pop-in {
+    25% {
+        transform: scale(0.95);
+        opacity: 0.3;
+    }
+    75% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.time-text {
+    font-size: 0.9rem;
+}
+
+#feed-cnt {
+    max-height: calc(100vh - 4rem);
+}
+
+.no-link {
+    color: var(--bs-body-color);
+    text-transform: none;
+    text-decoration: dotted;
+}
+
+.no-link:hover {
+    color: var(--bs-body-color);
+    text-decoration: underline;
+}
+
+.no-link-img {
+    color: var(--bs-body-color);
+}
+
+.no-link-img:hover {
+    color: var(--bs-body-color);
+}
+
+#msg-cnt {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+}
+
+#pinned-msg-cnt {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    max-height: 400px;
+    overflow: auto;
+}
+
+#invite-member-list {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.msg-img-thumbnail {
+    min-width: 50px;
+    width: 50px;
+}
+
+#hide-password-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* all templates have display none */
+
+.template {
+    display: none !important;
+}
+
+.pinned {
+    color: gray;
+}
+
+.no-style {
+    background-color: inherit;
+    border: none;
+}
+
+.react-badge {
+    padding: 0.25em 0.45em;
+    font-size: 0.55em;
+    left: 80% !important;
+}
