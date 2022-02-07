@@ -3,22 +3,22 @@ import { displayAlert } from "./helpers.js";
 import { loginModal, registrationModal } from "./DOMcache.js";
 import { createAlertError } from "./templates.js";
 
-const BASE_URL = "http://localhost:5005";
+const BASE_URL = "http://localhost:3000";
 
 const api = {
   register: `${BASE_URL}/auth/register`,
   login: `${BASE_URL}/auth/login`,
   logout: `${BASE_URL}/auth/logout`,
-  users: `${BASE_URL}/user`,
-  user: `${BASE_URL}/user/`,
-  updateUser: `${BASE_URL}/user`,
-  allChannels: `${BASE_URL}/channel`,
-  createChannel: `${BASE_URL}/channel`,
-  channelInfo: `${BASE_URL}/channel/`,
-  editChannel: `${BASE_URL}/channel/`,
-  joinChannel: `${BASE_URL}/channel/`,
-  leaveChannel: `${BASE_URL}/channel/`,
-  inviteChannel: `${BASE_URL}/channel/`,
+  users: `${BASE_URL}/users`,
+  user: `${BASE_URL}/users/`,
+  updateUser: `${BASE_URL}/users`,
+  allChannels: `${BASE_URL}/channels`,
+  createChannel: `${BASE_URL}/channels`,
+  channelInfo: `${BASE_URL}/channels/`,
+  editChannel: `${BASE_URL}/channels/`,
+  joinChannel: `${BASE_URL}/channels/`,
+  leaveChannel: `${BASE_URL}/channels/`,
+  inviteChannel: `${BASE_URL}/channels/`,
   allMessages: `${BASE_URL}/message/`,
   sendMessage: `${BASE_URL}/message/`,
   deleteMessage: `${BASE_URL}/message/`,
@@ -53,7 +53,6 @@ export const fetchApi = (method, path, token, body, errorBox) => {
     .then((res) => {
       if (res.status === 400 || res.status === 403) {
         res.json().then((res) => {
-          console.log(res);
           if (errorBox !== null) {
             displayAlert(errorBox, res.error);
           } else {
@@ -146,7 +145,7 @@ export const login = (loginData) => {
     .then((res) => {
       if (res.ok) {
         return res.json();
-      } else if (res.status === 400 || res.status === 403) {
+      } else if (res.status >= 400 && res.status < 500) {
         res.json().then((res) => {
           const loginAlert = document.getElementById("login-alert");
           displayAlert(loginAlert, res.error);
@@ -160,6 +159,9 @@ export const login = (loginData) => {
       // local storage in order for it to persist
       localStorage.setItem("token", res.token);
       localStorage.setItem("id", res.userId);
+      localStorage.setItem("email", res.email);
+      localStorage.setItem("bio", res.bio);
+      localStorage.setItem("image", res.image);
       loginModal.hide();
       changeState("feed");
     })

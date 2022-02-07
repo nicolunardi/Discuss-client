@@ -63,7 +63,7 @@ document
     loginModal.toggle();
   });
 
-  // open the registration modal
+// open the registration modal
 document
   .getElementById("open-register-modal-btn")
   .addEventListener("click", () => {
@@ -184,7 +184,7 @@ document.getElementById("modal-new-chnl-btn").addEventListener("click", () => {
     errorBox
   ).then((res) => {
     if (res.channelId) {
-      // add the channel to the list if all channels stored locally,
+      // add the channel to the list of all channels stored locally,
       // hide the modal and reset the form
       addChannel(res.channelId);
       newChnlModal.hide();
@@ -275,7 +275,7 @@ document.getElementById("leave-chnl-btn").addEventListener("click", () => {
       allChannels.map((channel) => {
         if (channel.id === currentChannel.id) {
           channel.members = channel.members.filter((member) => {
-            return member !== parseInt(localStorage.getItem("id"));
+            return member !== localStorage.getItem("id");
           });
         }
       });

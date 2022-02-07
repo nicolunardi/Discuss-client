@@ -80,7 +80,7 @@ const stateManager = () => {
         const sidebarUserName = document.getElementById("side-bar-user-name");
         sidebarUserName.innerText = localStorage.getItem("name");
         const navUserImg = document.getElementById("nav-user-img");
-        if (localStorage.getItem("image") !== "null") {
+        if (localStorage.getItem("image") !== "") {
           navUserImg.src = localStorage.getItem("image");
         } else {
           navUserImg.src = DEFAULT_IMG;
@@ -94,34 +94,8 @@ const stateManager = () => {
         );
       })
       .then(({ channels }) => {
-        const promiseList = [];
-        channels.map((channel) => {
-          if (isChannelMember(channel, parseInt(localStorage.getItem("id")))) {
-            promiseList.push(
-              fetchApi(
-                "GET",
-                `${api.channelInfo}${channel.id}`,
-                localStorage.getItem("token"),
-                null,
-                null
-              ).then((res) => {
-                if (!res.error) {
-                  res.id = channel.id;
-                  return res;
-                }
-              })
-            );
-          } else {
-            promiseList.push(channel);
-          }
-        });
-        return promiseList;
-      })
-      .then((promiseList) => {
-        Promise.all(promiseList).then((channels) => {
-          allChannels = channels;
-          rerenderSidebar();
-        });
+        allChannels = channels;
+        rerenderSidebar();
       });
   }
 };
@@ -188,7 +162,7 @@ export const changeChannel = (newChannelId) => {
   document.getElementById("leave-chnl-btn").style.display = "";
   document.getElementById("pinned-msg-btn").classList.remove("d-none");
   currentChannel = allChannels.find((channel) => {
-    return channel.id === parseInt(newChannelId, 10);
+    return channel.id === newChannelId;
   });
   getAllMsgsAtOnce(currentChannel.id);
   waitForFetch().then(() => {
@@ -315,7 +289,7 @@ export const addChannel = (newChannelId) => {
     null
   ).then((channel) => {
     // add the id to the new channel object
-    channel = { ...channel, id: parseInt(newChannelId, 10) };
+    channel = { ...channel, id: newChannelId };
     allChannels.push(channel);
     rerenderSidebar();
     // populateSidebarChannels([channel]);
@@ -420,7 +394,7 @@ export const removeMsgFromFeed = (message) => {
  * @return {boolean} is the user the sender of the message
  */
 export const isUserMsg = (userId, message) => {
-  return message.sender === parseInt(userId);
+  return message.sender === userId;
 };
 
 /**

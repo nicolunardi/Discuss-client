@@ -116,7 +116,7 @@ export const displayAlert = (alertBox, message, success = false) => {
  * @param {Array of Objects} channels
  */
 export const populateSidebarChannels = (channels) => {
-  const userId = parseInt(localStorage.getItem("id"), 10);
+  const userId = localStorage.getItem("id");
   for (const channel of channels) {
     // for public channels
     if (!channel.private) {
@@ -420,7 +420,7 @@ export const populateUserInfo = (isCurrentUser, userId = null) => {
     nameField.innerText = localStorage.getItem("name");
     bioField.innerText = userBio != "null" ? userBio : "empty";
     emailField.innerText = localStorage.getItem("email");
-    if (userImage !== "null") {
+    if (userImage !== "") {
       imageField.src = userImage;
     }
     populateEditProfile();
@@ -428,7 +428,6 @@ export const populateUserInfo = (isCurrentUser, userId = null) => {
 };
 /**
  *  populates the edit profile modal
- *
  */
 export const populateEditProfile = () => {
   const nameField = document.getElementById("edit-profile-name");
@@ -446,7 +445,7 @@ export const populateEditProfile = () => {
       : localStorage.getItem("bio");
   emailField.value = localStorage.getItem("email");
   passwordField.value = localStorage.getItem("password");
-  if (userImage !== "null") {
+  if (userImage !== "") {
     imageField.src = userImage;
   }
 };
@@ -499,10 +498,8 @@ export const saveProfileInfo = () => {
     removeInvalidFormStyle(invalidPasswordText, passwordField);
   }
   const body = {
-    email:
-      emailField.value === localStorage.getItem("email")
-        ? ""
-        : emailField.value,
+    // TODO: make sure email is not passed, should not be able to edit
+    email: emailField.value,
     password: passwordField.value,
     name: nameField.value,
     bio: bioField.value,

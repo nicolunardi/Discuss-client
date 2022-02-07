@@ -40,7 +40,7 @@ export const createPubChnlItem = (channel) => {
   const newChnlItem = document.getElementById("pub-chnl-item").cloneNode(true);
   const channelName = newChnlItem.children[0].children[1];
   const joinBtn = newChnlItem.children[1];
-  if (channel.members.includes(parseInt(localStorage.getItem("id")))) {
+  if (channel.members.includes(localStorage.getItem("id"))) {
     joinBtn.style.display = "none";
   }
   newChnlItem.dataset.channelIdPub = channel.id;
@@ -239,7 +239,7 @@ export const createMessageItem = (message, isNewMsg = false) => {
       message = currentChannelMessages.find((msg) => msg.id === message.id);
       const sameReaction = message.reacts.find((react) => {
         return (
-          react.user === parseInt(localStorage.getItem("id")) &&
+          react.user === localStorage.getItem("id") &&
           react.react === reactValue
         );
       });
@@ -270,7 +270,7 @@ export const createMessageItem = (message, isNewMsg = false) => {
 
   // clicking on the name to open the profile
   newMessage.querySelector(".no-link").addEventListener("click", () => {
-    if (parseInt(localStorage.getItem("id")) === message.sender) {
+    if (localStorage.getItem("id") === message.sender) {
       populateUserInfo(true);
     } else {
       populateUserInfo(false, message.sender);
