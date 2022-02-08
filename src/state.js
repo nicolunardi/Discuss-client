@@ -288,11 +288,8 @@ export const addChannel = (newChannelId) => {
     null,
     null
   ).then((channel) => {
-    // add the id to the new channel object
-    channel = { ...channel, id: newChannelId };
     allChannels.push(channel);
     rerenderSidebar();
-    // populateSidebarChannels([channel]);
     return channel;
   });
 };

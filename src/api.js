@@ -19,14 +19,14 @@ const api = {
   joinChannel: `${BASE_URL}/channels/`,
   leaveChannel: `${BASE_URL}/channels/`,
   inviteChannel: `${BASE_URL}/channels/`,
-  allMessages: `${BASE_URL}/message/`,
-  sendMessage: `${BASE_URL}/message/`,
-  deleteMessage: `${BASE_URL}/message/`,
-  updateMessage: `${BASE_URL}/message/`,
-  pinMessage: `${BASE_URL}/message/pin/`,
-  unpinMessage: `${BASE_URL}/message/unpin/`,
-  reactMessage: `${BASE_URL}/message/react/`,
-  unreactMessage: `${BASE_URL}/message/unreact/`,
+  allMessages: `${BASE_URL}/messages/`,
+  sendMessage: `${BASE_URL}/messages/`,
+  deleteMessage: `${BASE_URL}/messages/`,
+  updateMessage: `${BASE_URL}/messages/`,
+  pinMessage: `${BASE_URL}/messages/pin/`,
+  unpinMessage: `${BASE_URL}/messages/unpin/`,
+  reactMessage: `${BASE_URL}/messages/react/`,
+  unreactMessage: `${BASE_URL}/messages/unreact/`,
 };
 
 export const successMessages = {
