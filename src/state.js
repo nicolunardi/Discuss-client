@@ -186,6 +186,7 @@ export const getAllMsgsAtOnce = (channelId) => {
 };
 
 const getAllMsgsAtOncehelper = (channelId, promiseList, start) => {
+  // TODO change now
   return getChannelMessages(channelId, start).then((res) => {
     if (!res.error) {
       if (res.messages.length) {
