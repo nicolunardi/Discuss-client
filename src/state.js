@@ -351,7 +351,7 @@ export const rerenderChannel = (channel) => {
  * @param {Object} message - message to add
  */
 export const addMsgToFeed = (message) => {
-  currentChannelMessages.unshift(message);
+  setMessagesLoaded(currentChannelMessages.unshift(message));
   createMessageItem(message, true);
 };
 /**

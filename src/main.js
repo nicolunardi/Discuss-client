@@ -295,13 +295,9 @@ document.getElementById("send-msg-btn").addEventListener("click", () => {
   };
   sendMessage(body, currentChannel.id).then((res) => {
     if (!res.error) {
-      getAllMsgsAtOnce(currentChannel.id);
-      waitForFetch().then(() => {
-        const newMessage = currentChannelMessages[0];
-        addMsgToFeed(newMessage);
-        messageBox.value = "";
-        document.getElementById("msg-cnt").scrollTop = 0;
-      });
+      addMsgToFeed(res.message);
+      messageBox.value = "";
+      document.getElementById("msg-cnt").scrollTop = 0;
     }
   });
 });
@@ -473,6 +469,7 @@ document.getElementById("msg-cnt").addEventListener("scroll", (e) => {
     msgCnt.scrollHeight - Math.abs(msgCnt.scrollTop) ===
     msgCnt.clientHeight + 1
   ) {
+    console.log("top");
     loadMoreMessages();
   }
 });
