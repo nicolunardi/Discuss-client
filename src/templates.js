@@ -143,14 +143,9 @@ export const createMessageItem = (message, isNewMsg = false) => {
   newMessage.dataset.senderId = message.sender;
   newMessage.classList.remove("template");
   newMessage.removeAttribute("id");
-  getUser(message.sender).then((user) => {
-    if (!user.error) {
-      messageUser.innerText = user.name;
-      if (user.image) {
-        userImg.src = user.image;
-      }
-    }
-  });
+  messageUser.innerText = message.sender.name;
+  userImg.src = message.sender.image;
+
   timeStamp.innerText = getReadableDate(message.sentAt);
   if (!message.image) {
     messageText.innerText = message.message;

@@ -1,4 +1,9 @@
-import api, { getUser, getChannelMessages, fetchApi } from "./api.js";
+import api, {
+  getUser,
+  getChannelMessages,
+  fetchApi,
+  NUMBER_OF_MESSAGES,
+} from "./api.js";
 import {
   clearChildren,
   DEFAULT_IMG,
@@ -152,7 +157,7 @@ export const waitForFetch = () => {
  * @param {*} newChannelId - the channel id to change to
  */
 export const changeChannel = (newChannelId) => {
-  finishedFetchingMessages = true;
+  setMessagesLoaded(0);
   if (newChannelId === null) {
     currentChannel = null;
     rerenderChannels();
@@ -164,43 +169,22 @@ export const changeChannel = (newChannelId) => {
   currentChannel = allChannels.find((channel) => {
     return channel.id === newChannelId;
   });
-  getAllMsgsAtOnce(currentChannel.id);
-  waitForFetch().then(() => {
+  getMessages(currentChannel.id).then((res) => {
     // take the user back to the start of the msg feed
     document.getElementById("msg-cnt").scrollTop = 0;
-    setMessagesLoaded(0);
+    setMessagesLoaded(NUMBER_OF_MESSAGES);
     rerenderChannels();
   });
 };
-/**
- *  gets all the messages in a channel at once
- *
- * @param {number} channelId - the channel id of the channel to get msgs from
- */
-export const getAllMsgsAtOnce = (channelId) => {
-  finishedFetchingMessages = false;
-  let promiseList = [];
-  return getAllMsgsAtOncehelper(channelId, promiseList, 0).then(() => {
-    return Promise.allSettled(promiseList);
+
+export const getMessages = (channelId) => {
+  return getChannelMessages(channelId, messagesLoaded).then(({ messages }) => {
+    currentChannelMessages = messages;
   });
 };
 
-const getAllMsgsAtOncehelper = (channelId, promiseList, start) => {
-  // TODO change now
-  return getChannelMessages(channelId, start).then((res) => {
-    if (!res.error) {
-      if (res.messages.length) {
-        getAllMsgsAtOncehelper(channelId, promiseList, start + 25);
-        promiseList.push(...res.messages);
-      } else {
-        // in here do the pinned messages
-        currentChannelMessages = promiseList;
-        updatePinnedMessages();
-        setTotalMessages(currentChannelMessages.length);
-        finishedFetchingMessages = true;
-      }
-    }
-  });
+export const getAllMsgsAtOnce = (channelId) => {
+  return ChannelId;
 };
 
 /**

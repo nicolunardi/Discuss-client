@@ -4,6 +4,8 @@ import { loginModal, registrationModal } from "./DOMcache.js";
 import { createAlertError } from "./templates.js";
 
 const BASE_URL = "http://localhost:3000";
+// Number of messages to obtain per api call
+export const NUMBER_OF_MESSAGES = 25;
 
 const api = {
   register: `${BASE_URL}/auth/register`,
@@ -210,7 +212,7 @@ export const getAllChannels = () => {
 export const getChannelMessages = (channelId, start = 0) => {
   return fetchApi(
     "GET",
-    `${api.allMessages}${channelId}?start=${start}`,
+    `${api.allMessages}${channelId}?start=${start}&number=${NUMBER_OF_MESSAGES}`,
     localStorage.getItem("token"),
     null,
     null
