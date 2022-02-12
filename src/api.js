@@ -25,6 +25,7 @@ const api = {
   sendMessage: `${BASE_URL}/messages/`,
   deleteMessage: `${BASE_URL}/messages/`,
   updateMessage: `${BASE_URL}/messages/`,
+  allPinnedMessages: `${BASE_URL}/messages/pin/`,
   pinMessage: `${BASE_URL}/messages/pin/`,
   unpinMessage: `${BASE_URL}/messages/unpin/`,
   reactMessage: `${BASE_URL}/messages/react/`,
@@ -276,6 +277,16 @@ export const updateMessage = (channelId, messageId, body, errorBox) => {
     localStorage.getItem("token"),
     body,
     errorBox
+  );
+};
+
+export const pinMessage = (channelId, messageId) => {
+  return fetchApi(
+    "POST",
+    `${api.pinMessage}${channelId}/${messageId}`,
+    localStorage.getItem("token"),
+    null,
+    null
   );
 };
 

@@ -364,7 +364,7 @@ export const displayReactions = (
  */
 export const populatePinnedMessages = () => {
   const pinnedMsgFeed = document.getElementById("pinned-msg-cnt");
-  const pinnedMsgs = getPinnedMessages();
+  const pinnedMsgs = getPinnedMessages(); 
   clearChildren(pinnedMsgFeed);
   if (!pinnedMsgs.length) {
     pinnedMsgFeed.innerText = "No Pinned Messages";
