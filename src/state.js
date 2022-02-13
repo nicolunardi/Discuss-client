@@ -376,7 +376,7 @@ export const removeMsgFromFeed = (message) => {
  * @return {boolean} is the user the sender of the message
  */
 export const isUserMsg = (userId, message) => {
-  return message.sender === userId;
+  return message.sender.userId === userId;
 };
 
 /**

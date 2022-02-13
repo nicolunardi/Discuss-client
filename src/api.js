@@ -280,10 +280,10 @@ export const updateMessage = (channelId, messageId, body, errorBox) => {
   );
 };
 
-export const pinMessage = (channelId, messageId) => {
+export const getPinnedMessages = (channelId) => {
   return fetchApi(
-    "POST",
-    `${api.pinMessage}${channelId}/${messageId}`,
+    "GET",
+    `${api.allPinnedMessages}${channelId}`,
     localStorage.getItem("token"),
     null,
     null

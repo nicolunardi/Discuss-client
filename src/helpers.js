@@ -4,6 +4,7 @@ import {
   inviteChannel,
   successMessages,
   updateUser,
+  getPinnedMessages,
 } from "./api.js";
 import {
   chnlInfoModal,
@@ -14,7 +15,6 @@ import {
   currentChannelMessages,
   getCurrentChannel,
   getMessagesLoaded,
-  getPinnedMessages,
   getTotalMessages,
 } from "./state.js";
 import {
@@ -240,11 +240,11 @@ export const populateChannelInfo = (currentChannel) => {
         const { users } = res;
         users.map((user) => {
           // only show users not already members
-          if (!isChannelMember(currentChannel, user.id)) {
+          if (!isChannelMember(currentChannel, user.userId)) {
             promiseList.push(
-              getUser(user.id).then((res) => {
+              getUser(user.userId).then((res) => {
                 if (!res.error) {
-                  res.id = user.id;
+                  res.id = user.userId;
                   return res;
                 }
               })
@@ -360,18 +360,19 @@ export const displayReactions = (
 
 /**
  * populates the pinned message modal with all the pinned messages of the current channel
- *
  */
 export const populatePinnedMessages = () => {
+  const currentChannel = getCurrentChannel();
   const pinnedMsgFeed = document.getElementById("pinned-msg-cnt");
-  const pinnedMsgs = getPinnedMessages(); 
-  clearChildren(pinnedMsgFeed);
-  if (!pinnedMsgs.length) {
-    pinnedMsgFeed.innerText = "No Pinned Messages";
-  }
-  for (const message of pinnedMsgs) {
-    createPinnedMsgItem(message);
-  }
+  getPinnedMessages(currentChannel.id).then(({ messages }) => {
+    clearChildren(pinnedMsgFeed);
+    if (!messages.length) {
+      pinnedMsgFeed.innerText = "No Pinned Messages";
+    }
+    for (const message of messages) {
+      createPinnedMsgItem(message);
+    }
+  });
 };
 
 /**

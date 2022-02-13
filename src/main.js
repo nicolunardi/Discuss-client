@@ -469,7 +469,6 @@ document.getElementById("msg-cnt").addEventListener("scroll", (e) => {
     msgCnt.scrollHeight - Math.abs(msgCnt.scrollTop) ===
     msgCnt.clientHeight + 1
   ) {
-    console.log("top");
     loadMoreMessages();
   }
 });

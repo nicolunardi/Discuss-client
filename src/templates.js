@@ -195,33 +195,20 @@ export const createMessageItem = (message, isNewMsg = false) => {
     // update the message to the latest edit as the message passed into
     // this function hold the version at node creation time
     message = currentChannelMessages.find((msg) => msg.id === message.id);
-
     if (message.pinned) {
       unpinMessage(currentChannel.id, message.id).then((res) => {
         if (!res.error) {
-          getAllMsgsAtOnce(currentChannel.id);
-
-          waitForFetch().then(() => {
-            const editedMsg = currentChannelMessages.find(
-              (msg) => msg.id === message.id
-            );
-            messageReactions = generateReactionsObject(editedMsg);
-            rerenderMessage(editedMsg, messageReactions);
-          });
+          message.pinned = false;
+          messageReactions = generateReactionsObject(message);
+          rerenderMessage(message, messageReactions);
         }
       });
     } else {
       pinMessage(currentChannel.id, message.id).then((res) => {
         if (!res.error) {
-          getAllMsgsAtOnce(currentChannel.id);
-
-          waitForFetch().then(() => {
-            const editedMsg = currentChannelMessages.find(
-              (msg) => msg.id === message.id
-            );
-            messageReactions = generateReactionsObject(editedMsg);
-            rerenderMessage(editedMsg, messageReactions);
-          });
+          message.pinned = true;
+          messageReactions = generateReactionsObject(message);
+          rerenderMessage(message, messageReactions);
         }
       });
     }
@@ -323,21 +310,17 @@ export const createPinnedMsgItem = (message) => {
   const reactionBarEmojis = reactionsBar.children;
   const userImg = newMessage.querySelector(".user-img");
   const msgImg = newMessage.querySelector(".msg-img");
-
+  const user = message.sender;
   let messageReactions = generateReactionsObject(message);
 
   // display reactions
   displayReactions(reactionBarEmojis, messageReactions, reactionsBar);
   newMessage.classList.remove("template");
   newMessage.removeAttribute("id");
-  getUser(message.sender).then((user) => {
-    if (!user.error) {
-      messageUser.innerText = user.name;
-      if (user.image) {
-        userImg.src = user.image;
-      }
-    }
-  });
+
+  messageUser.innerText = user.name;
+  userImg.src = user.image;
+
   timeStamp.innerText = getReadableDate(message.sentAt);
   if (!message.image) {
     messageText.innerText = message.message;
