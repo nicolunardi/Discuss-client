@@ -57,6 +57,16 @@ const checkAuthentication = () => {
 };
 
 /**
+ *  sets the channel messages to a new array of messages. Returns the new array
+ *
+ * @param {Array} messages - the array of new messages
+ */
+export const setCurrentChannelMessages = (messages) => {
+  currentChannelMessages = messages;
+  return currentChannelMessages;
+};
+
+/**
  * Handles the changes of state of the app
  */
 const stateManager = () => {

@@ -179,6 +179,7 @@ export const createMessageItem = (message, isNewMsg = false) => {
     }
     // update the message to the latest edit
     message = currentChannelMessages.find((msg) => msg.id === message.id);
+    console.log(message);
     updateMsgToEdit(message);
   });
   // change the text of the pinned button and the display of the pinned icon

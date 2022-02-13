@@ -35,7 +35,7 @@ const api = {
 export const successMessages = {
   invite: "Members successfully invited",
   userInfo: "User info successfully updated",
-  editMessaage: "Successfully edited the message",
+  editMessage: "Successfully edited the message",
 };
 
 export const fetchApi = (method, path, token, body, errorBox) => {
@@ -273,7 +273,7 @@ export const deleteMessage = (channelId, messageId) => {
 export const updateMessage = (channelId, messageId, body, errorBox) => {
   return fetchApi(
     "PUT",
-    `${api.deleteMessage}${channelId}/${messageId}`,
+    `${api.updateMessage}${channelId}/${messageId}`,
     localStorage.getItem("token"),
     body,
     errorBox

@@ -40,6 +40,7 @@ import {
   rerenderMessage,
   getAllMsgsAtOnce,
   waitForFetch,
+  setCurrentChannelMessages,
 } from "./state.js";
 import {
   loginModal,
@@ -350,20 +351,25 @@ document.getElementById("edit-msg-btn").addEventListener("click", () => {
   updateMessage(currentChannel.id, currentMsg.id, body, errorBox).then(
     (res) => {
       if (!res.error) {
-        getAllMsgsAtOnce(currentChannel.id);
+        const updatedMsg = res.message;
+        // update the current channel messages to reflect the updated message
+        setCurrentChannelMessages(
+          currentChannelMessages.map((msg) => {
+            if (msg.id === updatedMsg.id) {
+              return updatedMsg;
+            } else {
+              return msg;
+            }
+          })
+        );
 
-        waitForFetch().then(() => {
-          const editedMsg = currentChannelMessages.find(
-            (msg) => msg.id === currentMsg.id
-          );
-          const messageReactions = generateReactionsObject(editedMsg);
-          rerenderMessage(editedMsg, messageReactions);
-          const alertBox = document.getElementById("edit-msg-alert");
-          displayAlert(alertBox, successMessages.editMessaage, true);
-          setTimeout(() => {
-            editMsgInfoModal.hide();
-          }, 1000);
-        });
+        const messageReactions = generateReactionsObject(updatedMsg);
+        rerenderMessage(updatedMsg, messageReactions);
+        const alertBox = document.getElementById("edit-msg-alert");
+        displayAlert(alertBox, successMessages.editMessage, true);
+        setTimeout(() => {
+          editMsgInfoModal.hide();
+        }, 1000);
       }
     }
   );
