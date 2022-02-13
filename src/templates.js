@@ -29,6 +29,7 @@ import {
   waitForFetch,
   setMessagesLoaded,
   getMessagesLoaded,
+  setCurrentChannelMessages,
 } from "./state.js";
 
 /**
@@ -237,15 +238,19 @@ export const createMessageItem = (message, isNewMsg = false) => {
       }
       Promise.race(promiseList).then((res) => {
         if (!res.error) {
-          getAllMsgsAtOnce(currentChannel.id);
+          const message = res.message;
+          setCurrentChannelMessages(
+            currentChannelMessages.map((msg) => {
+              if (msg.id === message.id) {
+                return message;
+              } else {
+                return msg;
+              }
+            })
+          );
 
-          waitForFetch().then(() => {
-            const editedMsg = currentChannelMessages.find(
-              (msg) => msg.id === message.id
-            );
-            messageReactions = generateReactionsObject(editedMsg);
-            rerenderMessage(editedMsg, messageReactions);
-          });
+          messageReactions = generateReactionsObject(message);
+          rerenderMessage(message, messageReactions);
         }
       });
     });
