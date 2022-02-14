@@ -233,35 +233,21 @@ export const populateChannelInfo = (currentChannel) => {
   // channel members invite section
   const inviteMemberList = document.getElementById("invite-member-list");
   clearChildren(inviteMemberList);
-  getAllUsers()
-    .then((res) => {
-      const promiseList = [];
-      if (!res.error) {
-        const { users } = res;
-        users.map((user) => {
-          // only show users not already members
-          if (!isChannelMember(currentChannel, user.userId)) {
-            promiseList.push(
-              getUser(user.userId).then((res) => {
-                if (!res.error) {
-                  res.id = user.userId;
-                  return res;
-                }
-              })
-            );
-          }
-        });
+  getAllUsers().then((res) => {
+    // const promiseList = [];
+    if (!res.error) {
+      let { users } = res;
+      // only show users not already members
+      users = users.filter(
+        (user) => !isChannelMember(currentChannel, user.userId)
+      );
+      console.log(users);
+      users.sort((user1, user2) => user1.name.localeCompare(user2.name));
+      for (const user of users) {
+        createInviteUserItem(user);
       }
-      return promiseList;
-    })
-    .then((promiseList) => {
-      Promise.all(promiseList).then((users) => {
-        users.sort((user1, user2) => user1.name.localeCompare(user2.name));
-        for (const user of users) {
-          createInviteUserItem(user);
-        }
-      });
-    });
+    }
+  });
 };
 
 /**
@@ -472,35 +458,14 @@ export const saveProfileInfo = () => {
   const invalidPasswordText =
     passwordField.parentNode.querySelector(".invalid-feedback");
 
-  if (
-    !nameField.value.trim() ||
-    !emailField.value.trim() ||
-    !passwordField.value.trim()
-  ) {
-    if (!nameField.value.trim()) {
-      addInvalidFormStyle(invalidNameText, nameField);
-    } else {
-      removeInvalidFormStyle(invalidNameText, nameField);
-    }
-    if (!emailField.value.trim()) {
-      addInvalidFormStyle(invalidEmailText, emailField);
-    } else {
-      removeInvalidFormStyle(invalidEmailText, emailField);
-    }
-    if (!passwordField.value.trim()) {
-      addInvalidFormStyle(invalidPasswordText, passwordField);
-    } else {
-      removeInvalidFormStyle(invalidPasswordText, passwordField);
-    }
+  if (!nameField.value.trim()) {
+    addInvalidFormStyle(invalidNameText, nameField);
     return;
   } else {
     removeInvalidFormStyle(invalidNameText, nameField);
-    removeInvalidFormStyle(invalidEmailText, emailField);
-    removeInvalidFormStyle(invalidPasswordText, passwordField);
   }
+
   const body = {
-    // TODO: make sure email is not passed, should not be able to edit
-    email: emailField.value,
     password: passwordField.value,
     name: nameField.value,
     bio: bioField.value,
@@ -513,7 +478,6 @@ export const saveProfileInfo = () => {
       localStorage.setItem("name", nameField.value);
       localStorage.setItem("email", emailField.value);
       localStorage.setItem("bio", bioField.value);
-      localStorage.setItem("password", passwordField.value);
       localStorage.setItem("image", newImage);
       displayAlert(alertBox, successMessages.userInfo, true);
       const sidebarUserName = document.getElementById("side-bar-user-name");

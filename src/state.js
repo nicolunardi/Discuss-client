@@ -354,6 +354,7 @@ export const rerenderChannel = (channel) => {
     channelName.innerText = channel.name;
   }
 };
+
 /**
  * creates a message item and adds it to the feed.
  * also updates the currentChannelMessages

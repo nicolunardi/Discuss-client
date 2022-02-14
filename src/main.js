@@ -1,4 +1,5 @@
 import api, {
+  createChannel,
   fetchApi,
   getChannelMessages,
   leaveChannel,
@@ -7,6 +8,7 @@ import api, {
   register,
   sendMessage,
   successMessages,
+  updateChannel,
   updateMessage,
 } from "./api.js";
 import {
@@ -95,7 +97,7 @@ document
         email: email.value,
         password: password.value,
       };
-      login(data).then(() => localStorage.setItem("password", password.value));
+      login(data);
     }
   });
 
@@ -176,14 +178,9 @@ document.getElementById("modal-new-chnl-btn").addEventListener("click", () => {
     private: priv.checked,
     description: description ? description.value : "",
   };
+
   const errorBox = document.getElementById("new-chnl-alert");
-  fetchApi(
-    "POST",
-    api.createChannel,
-    localStorage.getItem("token"),
-    body,
-    errorBox
-  ).then((res) => {
+  createChannel(body, errorBox).then((res) => {
     if (res.channelId) {
       // add the channel to the list of all channels stored locally,
       // hide the modal and reset the form
@@ -224,6 +221,7 @@ document.getElementById("save-chnl-info").addEventListener("click", (e) => {
     (name.value === prevName && description.value === prevDescription) ||
     name.value === ""
   ) {
+    console.log(name.value === prevName);
     if (name.value === "" || name.value === prevName) {
       if (name.value === "") {
         invalidNameText.innerText = "Can't be empty.";
@@ -251,13 +249,7 @@ document.getElementById("save-chnl-info").addEventListener("click", (e) => {
 
   const errorBox = document.getElementById("edit-chnl-info-alert");
 
-  fetchApi(
-    "PUT",
-    `${api.editChannel}${currentChannel.id}`,
-    localStorage.getItem("token"),
-    body,
-    errorBox
-  ).then((res) => {
+  updateChannel(currentChannel.id, body, errorBox).then((res) => {
     if (!res.error) {
       editChannelInfo(currentChannel.id, body);
       rerenderChannel(currentChannel);

@@ -220,6 +220,16 @@ export const getChannelMessages = (channelId, start = 0) => {
   );
 };
 
+export const createChannel = (body, errorBox) => {
+  return fetchApi(
+    "POST",
+    api.createChannel,
+    localStorage.getItem("token"),
+    body,
+    errorBox
+  );
+};
+
 export const joinChannel = (channelId) => {
   return fetchApi(
     "POST",
@@ -244,6 +254,16 @@ export const inviteChannel = (channelId, body, errorBox) => {
   return fetchApi(
     "POST",
     `${api.inviteChannel}${channelId}/invite`,
+    localStorage.getItem("token"),
+    body,
+    errorBox
+  );
+};
+
+export const updateChannel = (channelId, body, errorBox) => {
+  return fetchApi(
+    "PUT",
+    `${api.editChannel}${channelId}`,
     localStorage.getItem("token"),
     body,
     errorBox

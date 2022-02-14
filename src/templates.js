@@ -258,10 +258,10 @@ export const createMessageItem = (message, isNewMsg = false) => {
 
   // clicking on the name to open the profile
   newMessage.querySelector(".no-link").addEventListener("click", () => {
-    if (localStorage.getItem("id") === message.sender) {
+    if (localStorage.getItem("id") === message.sender.userId) {
       populateUserInfo(true);
     } else {
-      populateUserInfo(false, message.sender);
+      populateUserInfo(false, message.sender.userId);
     }
   });
 
@@ -347,6 +347,8 @@ export const createPinnedMsgItem = (message) => {
  * @param {object} user - the user
  */
 export const createInviteUserItem = (user) => {
+  console.log(user);
+  console.log(user);
   const inviteMemberList = document.getElementById("invite-member-list");
   const inviteUserItem = document
     .getElementById("invite-user-template")
@@ -356,9 +358,10 @@ export const createInviteUserItem = (user) => {
   inviteUserItem.removeAttribute("id");
   inviteUserItem.classList.remove("template");
   userName.innerText = user.name;
-  inputValue.value = user.id;
+  inputValue.value = user.userId;
   inviteMemberList.append(inviteUserItem);
 };
+
 /**
  *
  * creates a spinner to be displayed at the top of the mesg feed when
