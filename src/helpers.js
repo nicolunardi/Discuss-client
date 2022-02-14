@@ -211,6 +211,8 @@ export const populateChannelInfo = (currentChannel) => {
   const privacyField = document.getElementById("chnl-info-privacy");
   const creatorField = document.getElementById("chnl-info-creator");
   const createdField = document.getElementById("chnl-info-created");
+  const editBtn = document.getElementById("channel-info-edit-btn");
+
   nameField.innerText = currentChannel.name;
   descriptionField.innerText = currentChannel.description
     ? currentChannel.description
@@ -219,6 +221,12 @@ export const populateChannelInfo = (currentChannel) => {
   getUser(currentChannel.creator).then((user) => {
     if (!user.error) {
       creatorField.innerText = user.name;
+      // only show edit button if user is the owner of the channel
+      if (localStorage.getItem("id") === user._id) {
+        editBtn.classList.remove("d-none");
+      } else {
+        editBtn.classList.add("d-none");
+      }
     }
   });
 
@@ -241,7 +249,6 @@ export const populateChannelInfo = (currentChannel) => {
       users = users.filter(
         (user) => !isChannelMember(currentChannel, user.userId)
       );
-      console.log(users);
       users.sort((user1, user2) => user1.name.localeCompare(user2.name));
       for (const user of users) {
         createInviteUserItem(user);

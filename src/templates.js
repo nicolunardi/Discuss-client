@@ -347,8 +347,6 @@ export const createPinnedMsgItem = (message) => {
  * @param {object} user - the user
  */
 export const createInviteUserItem = (user) => {
-  console.log(user);
-  console.log(user);
   const inviteMemberList = document.getElementById("invite-member-list");
   const inviteUserItem = document
     .getElementById("invite-user-template")
