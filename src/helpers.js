@@ -558,18 +558,29 @@ export const inviteToChannel = () => {
   const promiseList = [];
   for (const user of selectedUsers) {
     const body = {
-      userId: parseInt(user.value),
+      userId: user.value,
     };
     promiseList.push(inviteChannel(currentChannel.id, body, alertBox));
   }
   Promise.all(promiseList).then((res) => {
-    for (const user of selectedUsers) {
-      currentChannel.members.push(parseInt(user.value));
+    if (res.some((r) => r.error)) {
+      displayAlert(
+        alertBox,
+        "Not all users were invited, something went wrong.",
+        false
+      );
+      setTimeout(() => {
+        chnlInfoModal.hide();
+      }, 1000);
+    } else {
+      displayAlert(alertBox, successMessages.invite, true);
+      setTimeout(() => {
+        chnlInfoModal.hide();
+      }, 1000);
     }
-    displayAlert(alertBox, successMessages.invite, true);
-    setTimeout(() => {
-      chnlInfoModal.hide();
-    }, 1000);
+    for (const user of res) {
+      if (user.userId) currentChannel.members.push(user.userId);
+    }
   });
 };
 

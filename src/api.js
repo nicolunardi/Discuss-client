@@ -54,8 +54,8 @@ export const fetchApi = (method, path, token, body, errorBox) => {
 
   return fetch(path, options)
     .then((res) => {
-      if (res.status === 400 || res.status === 403) {
-        res.json().then((res) => {
+      if (res.status >= 400 && res.status < 600) {
+        return res.json().then((res) => {
           if (errorBox !== null) {
             displayAlert(errorBox, res.error);
           } else {
@@ -195,7 +195,7 @@ export const getAllChannels = () => {
     },
   })
     .then((res) => {
-      if (res.status === 400 || res.status === 403) {
+      if (res.status >= 400 && res.status < 500) {
         res.json().then((res) => {
           throw Error(res.error);
         });

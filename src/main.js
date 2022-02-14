@@ -391,7 +391,7 @@ document.getElementById("invite-btn").addEventListener("click", () => {
   const checkedUserList = document
     .getElementById("invite-member-list")
     .querySelectorAll("input");
-  // check at least onme user is selected
+  // check at least one user is selected
   if (Array.from(checkedUserList).some((input) => input.checked)) {
     inviteToChannel();
   } else {
