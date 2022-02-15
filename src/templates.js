@@ -25,8 +25,6 @@ import {
   updateMsgToEdit,
   currentChannelMessages,
   rerenderMessage,
-  getAllMsgsAtOnce,
-  waitForFetch,
   setMessagesLoaded,
   getMessagesLoaded,
   setCurrentChannelMessages,
@@ -275,7 +273,7 @@ export const createMessageItem = (message, isNewMsg = false) => {
   } else {
     messageFeed.prepend(newMessage);
   }
-  setMessagesLoaded(getMessagesLoaded() + 1);
+  // setMessagesLoaded(getMessagesLoaded() + 1);
 };
 
 /**

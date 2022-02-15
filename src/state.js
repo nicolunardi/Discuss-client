@@ -2,7 +2,7 @@ import api, {
   getUser,
   getChannelMessages,
   fetchApi,
-  NUMBER_OF_MESSAGES,
+  getAllChannels,
 } from "./api.js";
 import {
   clearChildren,
@@ -43,10 +43,7 @@ let messagesLoaded = 0;
 // hold the msg that is being edited for validation purposes
 let msgToEdit = null;
 let pinnedMsgs = [];
-
-// Used as a flag to indicate when the recursion has finished. Had trouble
-// figuring out how to wait for the last call of the recursive fetch call
-let finishedFetchingMessages = false;
+let noMoreMessages = false;
 
 /**
  * checks that there is an authentication token in local storage,
@@ -64,6 +61,19 @@ const checkAuthentication = () => {
 export const setCurrentChannelMessages = (messages) => {
   currentChannelMessages = messages;
   return currentChannelMessages;
+};
+
+/**
+ * Returns the current channel messages
+ *
+ * @return {Array} messages - The array of channel messages
+ */
+export const getCurrentChannelMessages = () => {
+  return currentChannelMessages;
+};
+
+export const getNoMoreMessages = () => {
+  return noMoreMessages;
 };
 
 /**
@@ -100,13 +110,7 @@ const stateManager = () => {
         } else {
           navUserImg.src = DEFAULT_IMG;
         }
-        return fetchApi(
-          "GET",
-          api.allChannels,
-          localStorage.getItem("token"),
-          null,
-          null
-        );
+        return getAllChannels();
       })
       .then(({ channels }) => {
         allChannels = channels;
@@ -117,7 +121,6 @@ const stateManager = () => {
 
 /**
  * initializes the state
- *
  */
 export const initState = () => {
   if (!checkAuthentication()) {
@@ -136,38 +139,17 @@ export const changeState = (newState) => {
   stateManager();
 };
 
-const getFinishedFetchingMessages = () => {
-  return finishedFetchingMessages;
-};
-
-// Took inspiration from stackoverflow for this function to deal with recursive
-// fetch calls
-// https://stackoverflow.com/questions/22125865/wait-until-flag-true
-// Author: EranGrin
-export const waitForFetch = () => {
-  // creates a new promise to check if the deepest recursive call on the
-  // getAllMsgsAtOnce function has concluded
-  return new Promise((resolve, reject) => {
-    const timePeriod = setInterval(() => {
-      if (!getFinishedFetchingMessages()) return;
-      clearInterval(timePeriod);
-      resolve();
-    }, 100);
-    //  if its takking too long display error
-    setTimeout(() => {
-      clearInterval(timePeriod);
-      reject("Error getting all messages");
-    }, 10000);
-  });
-};
-
 /**
  *  handles changing the channel
- *
  * @param {*} newChannelId - the channel id to change to
  */
 export const changeChannel = (newChannelId) => {
+  // reset some values
   setMessagesLoaded(0);
+  setTotalMessages(0);
+  noMoreMessages = false;
+  // reset the messages array
+  currentChannelMessages = [];
   if (newChannelId === null) {
     currentChannel = null;
     rerenderChannels();
@@ -179,22 +161,25 @@ export const changeChannel = (newChannelId) => {
   currentChannel = allChannels.find((channel) => {
     return channel.id === newChannelId;
   });
-  getMessages(currentChannel.id).then((res) => {
+
+  getMessages(currentChannel.id, messagesLoaded).then((res) => {
     // take the user back to the start of the msg feed
     document.getElementById("msg-cnt").scrollTop = 0;
-    setMessagesLoaded(NUMBER_OF_MESSAGES);
     rerenderChannels();
   });
 };
 
 export const getMessages = (channelId) => {
   return getChannelMessages(channelId, messagesLoaded).then(({ messages }) => {
-    currentChannelMessages = messages;
+    // Set the value of noMoreMessages to true if no messages are returned,
+    //  meaning all messages have already been retrieved
+    if (!messages.length) {
+      noMoreMessages = true;
+    }
+    currentChannelMessages.push(...messages);
+    setMessagesLoaded(currentChannelMessages.length);
+    return messages;
   });
-};
-
-export const getAllMsgsAtOnce = (channelId) => {
-  return ChannelId;
 };
 
 /**

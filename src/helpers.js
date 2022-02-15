@@ -5,6 +5,8 @@ import {
   successMessages,
   updateUser,
   getPinnedMessages,
+  NUMBER_OF_MESSAGES,
+  getChannelMessages,
 } from "./api.js";
 import {
   chnlInfoModal,
@@ -14,8 +16,12 @@ import {
 import {
   currentChannelMessages,
   getCurrentChannel,
+  getCurrentChannelMessages,
+  getMessages,
   getMessagesLoaded,
+  getNoMoreMessages,
   getTotalMessages,
+  setCurrentChannelMessages,
 } from "./state.js";
 import {
   createPubChnlItem,
@@ -583,19 +589,24 @@ export const previewImage = (image) => {
  *
  */
 export const loadMoreMessages = () => {
-  if (getMessagesLoaded() < getTotalMessages()) {
-    const spinner = createSpinnerItem();
-    const messagesLoaded = getMessagesLoaded();
-    populateMessageFeed(
-      currentChannelMessages,
-      messagesLoaded,
-      messagesLoaded + 25
-    );
-    // messages load to quickly so have to leave the spinner on for a bit for
-    // it to be apparent that new messages are loading on infinite scroll
-    setTimeout(() => {
-      spinner.parentNode.removeChild(spinner);
-    }, 300);
+  const messagesLoaded = getMessagesLoaded();
+  const currentChannel = getCurrentChannel();
+  // fetch more messages
+  if (!getNoMoreMessages()) {
+    getMessages(currentChannel.id).then((messages) => {
+      const spinner = createSpinnerItem();
+
+      populateMessageFeed(
+        getCurrentChannelMessages(),
+        messagesLoaded,
+        messagesLoaded + messages.length
+      );
+      // messages load to quickly so have to leave the spinner on for a bit for
+      // it to be apparent that new messages are loading on infinite scroll
+      setTimeout(() => {
+        spinner.parentNode.removeChild(spinner);
+      }, 300);
+    });
   }
 };
 

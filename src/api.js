@@ -187,27 +187,13 @@ export const logout = () => {
 };
 
 export const getAllChannels = () => {
-  return fetch(api.allChannels, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("token")}`,
-    },
-  })
-    .then((res) => {
-      if (res.status >= 400 && res.status < 500) {
-        res.json().then((res) => {
-          throw Error(res.error);
-        });
-      } else if (res.ok) {
-        return res.json();
-      } else {
-        throw new Error("Woops, something went wrong!");
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  return fetchApi(
+    "GET",
+    api.allChannels,
+    localStorage.getItem("token"),
+    null,
+    null
+  );
 };
 
 export const getChannelMessages = (channelId, start = 0) => {

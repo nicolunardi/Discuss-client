@@ -40,8 +40,6 @@ import {
   rerenderChannel,
   rerenderSidebar,
   rerenderMessage,
-  getAllMsgsAtOnce,
-  waitForFetch,
   setCurrentChannelMessages,
 } from "./state.js";
 import {
@@ -221,7 +219,6 @@ document.getElementById("save-chnl-info").addEventListener("click", (e) => {
     (name.value === prevName && description.value === prevDescription) ||
     name.value === ""
   ) {
-    console.log(name.value === prevName);
     if (name.value === "" || name.value === prevName) {
       if (name.value === "") {
         invalidNameText.innerText = "Can't be empty.";
@@ -463,8 +460,9 @@ document
 // used for infinite scroll
 document.getElementById("msg-cnt").addEventListener("scroll", (e) => {
   const msgCnt = e.target;
+
   if (
-    msgCnt.scrollHeight - Math.abs(msgCnt.scrollTop) ===
+    Math.abs(msgCnt.scrollHeight) - Math.abs(Math.round(msgCnt.scrollTop)) ===
     msgCnt.clientHeight + 1
   ) {
     loadMoreMessages();
