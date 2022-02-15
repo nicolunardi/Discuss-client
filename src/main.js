@@ -460,10 +460,12 @@ document
 // used for infinite scroll
 document.getElementById("msg-cnt").addEventListener("scroll", (e) => {
   const msgCnt = e.target;
+  const distFromTop =
+    Math.abs(msgCnt.scrollHeight) - Math.abs(Math.round(msgCnt.scrollTop));
 
   if (
-    Math.abs(msgCnt.scrollHeight) - Math.abs(Math.round(msgCnt.scrollTop)) ===
-    msgCnt.clientHeight + 1
+    distFromTop >= msgCnt.clientHeight - 5 &&
+    distFromTop < msgCnt.clientHeight + 5
   ) {
     loadMoreMessages();
   }

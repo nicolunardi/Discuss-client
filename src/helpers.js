@@ -594,7 +594,7 @@ export const loadMoreMessages = () => {
   // fetch more messages
   if (!getNoMoreMessages()) {
     getMessages(currentChannel.id).then((messages) => {
-      const spinner = createSpinnerItem();
+      // const spinner = createSpinnerItem();
 
       populateMessageFeed(
         getCurrentChannelMessages(),
@@ -603,9 +603,9 @@ export const loadMoreMessages = () => {
       );
       // messages load to quickly so have to leave the spinner on for a bit for
       // it to be apparent that new messages are loading on infinite scroll
-      setTimeout(() => {
-        spinner.parentNode.removeChild(spinner);
-      }, 300);
+      // setTimeout(() => {
+      //   spinner.parentNode.removeChild(spinner);
+      // }, 300);
     });
   }
 };
