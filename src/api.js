@@ -2,8 +2,8 @@ import { changeState } from "./state.js";
 import { displayAlert } from "./helpers.js";
 import { loginModal, registrationModal } from "./DOMcache.js";
 import { createAlertError } from "./templates.js";
+import { BASE_URL } from "./config.js";
 
-const BASE_URL = "http://localhost:3000";
 // Number of messages to obtain per api call
 export const NUMBER_OF_MESSAGES = 25;
 
