@@ -5,6 +5,7 @@ import {
   successMessages,
   updateUser,
   getPinnedMessages,
+  logout,
 } from "./api.js";
 import {
   chnlInfoModal,

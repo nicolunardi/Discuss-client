@@ -1,4 +1,4 @@
-import { changeState } from "./state.js";
+import { changeState, initState } from "./state.js";
 import { displayAlert } from "./helpers.js";
 import { loginModal, registrationModal } from "./DOMcache.js";
 import { createAlertError } from "./templates.js";
@@ -56,6 +56,13 @@ export const fetchApi = (method, path, token, body, errorBox) => {
     .then((res) => {
       if (res.status >= 400 && res.status < 600) {
         return res.json().then((res) => {
+          if (res.error === "Invalid Token") {
+            // if the token is invalid or has expired, take user back to the login screen
+            // TODO implement popup saying you have been logged out
+            localStorage.clear();
+            initState();
+            return;
+          }
           if (errorBox !== null) {
             displayAlert(errorBox, res.error);
           } else {
