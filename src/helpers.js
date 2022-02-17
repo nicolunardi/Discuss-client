@@ -5,8 +5,6 @@ import {
   successMessages,
   updateUser,
   getPinnedMessages,
-  NUMBER_OF_MESSAGES,
-  getChannelMessages,
 } from "./api.js";
 import {
   chnlInfoModal,
@@ -20,8 +18,6 @@ import {
   getMessages,
   getMessagesLoaded,
   getNoMoreMessages,
-  getTotalMessages,
-  setCurrentChannelMessages,
 } from "./state.js";
 import {
   createPubChnlItem,
@@ -624,7 +620,7 @@ export const populateAllImgModal = (message) => {
   const sentAt = document.getElementById("img-sent-at");
   modalImage.src = message.image;
   sentAt.innerText = getReadableDate(imageMsgs[currentIndex].sentAt);
-  getUser(message.sender).then((res) => {
+  getUser(message.sender.userId).then((res) => {
     if (!res.error) {
       senderName.innerText = res.name;
     }
@@ -638,7 +634,7 @@ export const populateAllImgModal = (message) => {
     }
     modalImage.src = imageMsgs[currentIndex].image;
     sentAt.innerText = getReadableDate(imageMsgs[currentIndex].sentAt);
-    getUser(imageMsgs[currentIndex].sender).then((res) => {
+    getUser(imageMsgs[currentIndex].sender.userId).then((res) => {
       if (!res.error) {
         senderName.innerText = res.name;
       }
@@ -649,7 +645,7 @@ export const populateAllImgModal = (message) => {
     currentIndex = (currentIndex + 1) % imageMsgs.length;
     modalImage.src = imageMsgs[currentIndex].image;
     sentAt.innerText = getReadableDate(imageMsgs[currentIndex].sentAt);
-    getUser(imageMsgs[currentIndex].sender).then((res) => {
+    getUser(imageMsgs[currentIndex].sender.userId).then((res) => {
       if (!res.error) {
         senderName.innerText = res.name;
       }
