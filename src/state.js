@@ -80,12 +80,12 @@ export const getNoMoreMessages = () => {
  * Handles the changes of state of the app
  */
 const stateManager = () => {
-  STATES[currentState].section.style.display = "";
+  STATES[currentState].section.setAttribute("style", "display: ");
   // sets the display to none for all states that are not the one to be
   // displayed
   for (const state in STATES) {
     if (state !== currentState) {
-      STATES[state].section.style.display = "none";
+      STATES[state].section.setAttribute("style", "display: none !important");
     }
   }
   if (currentState === "feed") {

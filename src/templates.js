@@ -8,6 +8,7 @@ import {
   unreactMessage,
 } from "./api.js";
 import {
+  DEFAULT_IMG,
   displayReactions,
   generateReactionsObject,
   getPvtChannelTab,
@@ -143,8 +144,7 @@ export const createMessageItem = (message, isNewMsg = false) => {
   newMessage.classList.remove("template");
   newMessage.removeAttribute("id");
   messageUser.innerText = message.sender.name;
-  userImg.src = message.sender.image;
-
+  userImg.src = message.sender.image || DEFAULT_IMG;
   timeStamp.innerText = getReadableDate(message.sentAt);
   if (!message.image) {
     messageText.innerText = message.message;
@@ -178,7 +178,6 @@ export const createMessageItem = (message, isNewMsg = false) => {
     }
     // update the message to the latest edit
     message = currentChannelMessages.find((msg) => msg.id === message.id);
-    console.log(message);
     updateMsgToEdit(message);
   });
   // change the text of the pinned button and the display of the pinned icon
