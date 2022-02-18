@@ -322,7 +322,7 @@ export const createPinnedMsgItem = (message) => {
   newMessage.removeAttribute("id");
 
   messageUser.innerText = user.name;
-  userImg.src = user.image;
+  userImg.src = user.image || DEFAULT_IMG;
 
   timeStamp.innerText = getReadableDate(message.sentAt);
   if (!message.image) {
