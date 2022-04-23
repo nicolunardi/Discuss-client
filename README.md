@@ -10,6 +10,7 @@
   <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting-out">Starting Out</a> &#xa0; | &#xa0;
+  <a href="#camera-screenshots">Screenshots</a> &#xa0; | &#xa0;
   <a href="#memo-license">License</a> &#xa0; | &#xa0;
   <a href="https://github.com/nicolunardi" target="_blank">Author</a>
 </p>
@@ -28,7 +29,7 @@ The backend of the project can be found at [Discuss Server](https://github.com/n
 
 ## :sparkles: Features ##
 
-[:white_check_mark:] Auth funcitons;\
+[:white_check_mark:] Auth functions;\
 [:white_check_mark:] sending, editing, and deleting messages in channels;\
 [:white_check_mark:] Reacting and pinning messages;\
 [:white_check_mark:] Creating public or private channels;\
@@ -67,6 +68,14 @@ $ yarn run start
 
 # The server will initialize in the <http://localhost:3000>
 ```
+
+## :camera: Screenshots ##
+
+![Screenshot](screenshots/screenshot-discuss-5.png)
+![Screenshot](screenshots/screenshot-discuss-4.png)
+![Screenshot](screenshots/screenshot-discuss-3.png)
+![Screenshot](screenshots/screenshot-discuss-2.png)
+![Screenshot](screenshots/screenshot-discuss-1.png)
 
 ## :memo: License ##
 
