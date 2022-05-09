@@ -139,6 +139,16 @@ document.getElementById("reg-modal-reg-btn").addEventListener("click", (e) => {
   }
 });
 
+// test login button
+document.addEventListener("click", (e) => {
+  e.preventDefault();
+  const data = {
+    email: "test@test.com",
+    password: "newPass",
+  };
+  login(data);
+});
+
 // alert close buttons
 document.querySelectorAll(".alert .btn-close").forEach((btn) =>
   btn.addEventListener("click", (e) => {
