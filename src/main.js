@@ -140,7 +140,7 @@ document.getElementById("reg-modal-reg-btn").addEventListener("click", (e) => {
 });
 
 // test login button
-document.addEventListener("click", (e) => {
+document.getElementById("test-login").addEventListener("click", (e) => {
   e.preventDefault();
   const data = {
     email: "test@test.com",
